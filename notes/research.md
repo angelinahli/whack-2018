@@ -10,10 +10,6 @@ Questions to answer:
 * Facebook based messenger app? - Angie
     * https://developers.facebook.com/docs/messenger-platform/getting-started/quick-start/#getting_started
 
-brainstormingwhack
-
-
-
 Here are some ideas for grounding activities:
 
 -Take deep, calm breaths.
