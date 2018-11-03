@@ -5,7 +5,7 @@ import random
 from flask import request, session
 
 from app import app, bot, db
-from models import User, Intervention, CheckIn
+from app.models import User, Intervention, CheckIn
 from config import VERIFY_TOKEN
 
 ### Helper functions
@@ -20,11 +20,11 @@ def send_message(recipient_id, response):
     return "Success"
 
 def get_user(fb_id):
-    user = User.query.filter_by(fb_id=user_id).first()
+    user = User.query.filter_by(fb_id=fb_id).first()
     # if this is the first time the user has been seen, add them
     if not user:
         user = User(
-            fb_id=user_id, 
+            fb_id=fb_id, 
             mid_conversation=True, 
             has_onboarded=False,
             last_action="NONE")
@@ -44,7 +44,7 @@ def handle_post_message(output):
             txt = None
             if msg["message"].get("text"):
                 txt = msg["message"]["text"].strip().lower()
-            resp_text = None  # need to add response text here
+            resp_text = "Test message"  # need to add response text here
             send_message(fb_id, resp_text)
     # this is fine, it's just easier to try except than use for loops 
     except IndexError: 
@@ -60,5 +60,5 @@ def receive_message():
         return verify_fb_token(token_sent)
     else:
          output = request.get_json()
-         handle_message(output)
+         handle_post_message(output)
     return "Message Processed"
