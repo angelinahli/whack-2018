@@ -13,6 +13,7 @@ def hello():
     with open("conversation.json", "r") as fl:
         txt = fl.read()
     msgs = json.loads(txt)
+    intro = random.choice(msgs["introductions"])
     resp = MessagingResponse()
-    resp.message(random.choice(msgs["introductions"]))
+    resp.message(intro)
     return str(resp)
