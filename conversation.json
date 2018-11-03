@@ -1,7 +1,11 @@
 {
-    "introductions": [
-        "Hey friend!", "Hi there!", "Good {time_of_day} 😊", "Hullo 😊", 
-        "Hiya!", "Hi!", "Heya! 👋", "My friend Octo 🐙 cat 🐱 says hello!!",
+    "INTRODUCTION": [
+        "Hey friend!", "Hi there!", "Hullo 😊", "Hiya!", "Hi!", "Heya! 👋", 
         "Hey champ! 🏆🥇", "Wassup?!"
-    ]
+    ],
+    "ONBOARDING": {
+        "START": "I'm WHACK Bot 🤖 It's nice to meet you! My creators made me to help people track their mental health progress and suggest tips to make your day go better. Do you want to check out my services? Respond 'yes' to continue!",
+        "SUCCESS": "🎉 Welcome to the family!!! 🎉 Nothing makes me happier than making a new friend 😊 Now we can begin!",
+        "REFUSE": "That's okay! You can always talk to me later if you change your mind 😊 Bye for now!"
+    }
 }
