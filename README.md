@@ -1,30 +1,47 @@
-WHACK 2018
+# WHACK 2018
 
-## Ideas
+## To Do
 
-* Clarifai API seems neat: https://clarifai.com/
-    * Classify the proportion of meal that is vegetarian, take a snapshot of what you eat afterwards, let people track their diets more closely just via a snapshot.
+### Research different types of implementations
+Implementation Types:
+    * Chrome extension - Angie
+    * Phone app - Angie
+    * Web app - Hala
+    * Text-based app - Hala
 
-* Assault protection app - idk. Maybe your phone rings falsely when you need it?
+Questions to answer:
+1) How would we implement a project like this?
+2) Does this sound feasible given the time we have?
 
-* App that will find you ways to save money and donate the difference to charities you pick
+## Idea
 
-* App that helps users find their way in the dark
+Build a chrome extension / maybe attached to a website that helps users track which online behaviors are correlated with poor mental health, and suggests that they take a break / suggests some interventions when user seems to be having a bad day.
 
-* Something that helps long distance couples date but online - some sort of game that inspires connection?
+## Details / Notes
 
-* A game that inspires real human connection, maybe particularly between strangers.
-    * Empathy and connection
-    * Be authentic to the persons' true voice
+* Behaviors we want to track:
+    * Time spent on different sites
+    * Ratio of times
+    * Time of day using
 
-* Something like the pixel / the portrait thing that went wild on reddit, where people collaborate in order to paint something. Maybe, a game where you have to negotiate with someone else in order to paint something. Like something that requires teamwork.
+* Interventions:
+    * Ask whether they are feeling okay?
+    * Help them wa
 
-* Something that gets people to pair up with others of differing opinions and talk
+* Woebot but an app!!!
+    * A preventative app that users can use
+    *
 
-* Immigration - A step by step process through immigration law in the U.S. like path 2 citizenship.
+* Try out a bunch of different behaviors and choose the best over time
+    * Multi armed bandit?
 
-* app that helps people organize job hunt
+* Tracks how theyre feeling, etc.
+* What sites are people visiting? How do we get that info?
+* Figuring out how to offer them recommendations
 
-* an extension that automatically hides posts that contain the words 'trigger warning'
+* We dont need a fancy or correct algorithm yo
+    * we could just choose whichever has highest hit rate
 
-* 
+* Intervention ideas:
+
+^ let's see which of these is the most feasible.
