@@ -1,11 +1,92 @@
 {
     "INTRODUCTION": [
-        "Hey friend!", "Hi there!", "Hullo 😊", "Hiya!", "Hi!", "Heya! 👋", 
-        "Hey champ! 🏆🥇", "Wassup?!"
+        "Hey friend!", 
+        "Hi there!", 
+        "Hullo 😊", 
+        "Hiya!", 
+        "Hi!", 
+        "Heya! 👋", 
+        "Hey champ! 🏆🥇", 
+        "Wassup?!"
     ],
-    "ONBOARDING": {
-        "START": "I'm WHACK Bot 🤖 It's nice to meet you! My creators made me to help people track their mental health progress and suggest tips to make your day go better. Do you want to check out my services? Respond 'yes' to continue!",
-        "SUCCESS": "🎉 Welcome to the family!!! 🎉 Nothing makes me happier than making a new friend 😊 Now we can begin!",
-        "REFUSE": "That's okay! You can always talk to me later if you change your mind 😊 Bye for now!"
-    }
+    "ONBOARDING_START": [
+        "I'm WHACK Bot 🤖 It's nice to meet you! My creators made me to help people track their mental health progress and suggest tips to make your day go better. The idea is: If you check in with me once a day, we'll work together to keep you feeling great."
+    ],
+    "ONBOARDING_ASK": [
+        "Before I show you around, it helps me to know what you'd like some help with. Would you mind sharing a little about yourself and your mental health goals?"
+    ],
+    "ONBOARDING_FINISH": [
+        "Thank you for introducing yourself! Nothing makes me happier than making a new friend 😊 Welcome to the Whack bot family!!! 🎉"
+    ],
+    "CHECKIN_START": [
+        "Would you like to check in with me today?"
+    ],
+    "CHECKIN_YES": [
+        "Awesome!",
+        "Great!"
+    ],
+    "CHECKIN_NO": [
+        "No problem 😊 If you change your mind, you can always check in with me again!",
+        "Totally understand! If it's a busy day, feel free to come back later!"
+    ],
+    "CHECKIN_BASELINE": [
+        "How are you feeling today on a scale from 1 (not too great) to 5 (feeling fantastic)?"
+    ],
+    "INTERV_START": [
+        "Would you like to try a mental health exercise with me today?",
+        "Are you up for trying something new? 😊"
+    ],
+    "INTERV_YES": [
+        "Amazing! I'm super excited to share this idea with you 😄",
+        "Sweet!! My non-existent heart is positively RACING with excitement 🤖",
+        "Fantastic! Gotta keep working out those mental health muscles 💪💪💪",
+        "Woo great job practicing #selfcare today!"
+    ],
+    "INTERV_NO": [
+        "That's okay! Thanks for letting me know 😊",
+        "Ok no worries - Maybe tomorrow!"
+    ],
+    "INTERV_TYPE": [
+        "What type of intervention would you like to try out today?"
+    ],
+    "INTERV_LENGTH": [
+        "How long do you have? 😊 (I want to be mindful of your time so I'll choose an activity that works with your schedule!)"
+    ],
+    "INTERV_FEEDBACK": [
+        "That's it, you're done for the day! How do you feel now, on a scale from 1 (not too great) to 5 (feeling fantastic)?"
+    ],
+    "INTERV_KEEP": [
+        "Thanks for sharing! 😊 Would you like to repeat this exercise sometime in the future?"
+    ],
+    "INTERV_END": [
+        "Cool, I'll keep your feedback in mind!! Thank you so much for spending time with me!!"
+    ],
+    "JOURNAL_START": [
+        "Is there anything else you want to tell me today? Feel free to talk to me about anything - I will keep it strictly between you and me! I know that it helps to talk to someone sometimes 😊"
+    ],
+    "JOURNAL_YES": [
+        "Yay!",
+        "Ok, I'm ready!",
+        "Excellent!"
+    ],
+    "JOURNAL_NO": [
+        "That's perfectly ok! Just remember that I'm always here whenever you want to talk to me. Literally... I'm always here. I'll never fall asleep on you 😅"
+    ],
+    "JOURNAL_PROMPT": [
+        "Tell me anything you would like! I've been told I'm an excellent listener...",
+        "My ears are all open! What's been on your mind recently?"
+    ],
+    "JOURNAL_END": [
+        "Thank you for your thoughts! I really enjoy listening to people 😊"
+    ],
+    "GRAPH_START": [],
+    "GRAPH_YES": [],
+    "GRAPH_NO": [],
+    "GRAPH_END": [],
+    "WRAPUP": [
+        "Thanks for visiting me today. Goodbye for now!",
+        "Thanks for stopping by - see you soon!",
+        "Thanks for coming to chat with me; I'll see you around!",
+        "Thank you for chatting - I hope to see you again real soon!"
+    ]
 }
