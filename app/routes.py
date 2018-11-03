@@ -32,25 +32,45 @@ def get_user(fb_id):
         db.session.commit()
     return user
 
+def get_next_msg_key(prev_key):
+    """ """
+    pass
+
+def get_random_message(msg_key):
+    pass
+
+def get_checkin_resp():
+    pass
+
+def get_interv_prompt():
+    pass
+
+def get_next_resp(user):
+    pass
 
 def handle_post_message(output):
     try:
         event = output["entry"][0]
         messaging = event["messaging"]
         msg = messaging[0]
+
+        # otherwise we don't want to do anything
         if msg.get("message"):
             fb_id = msg["sender"]["id"]
             user = get_user(fb_id)
-            print(user)
+
+            # save the user message
             txt = None
             if msg["message"].get("text"):
                 txt = msg["message"]["text"].strip().lower()
                 mess = Message(
                     user_id = user.user_id,
                     text = txt) 
-                print(txt)
                 db.session.add(mess)
-                db.session.commit()
+                db.session.commit()            
+
+            # figure out what to do next
+
             resp_text = "Test message"  # need to add response text here
             send_message(fb_id, resp_text)
     # this is fine, it's just easier to try except than use for loops 
