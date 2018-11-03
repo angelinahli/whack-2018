@@ -1,4 +1,6 @@
 from flask import Flask
+from pymessenger.bot import Bot
+
 from config import Config, ACCESS_TOKEN
 
 app = Flask(__name__)

@@ -3,9 +3,8 @@ import json
 import random
 
 from flask import request, session
-from pymessenger.bot import Bot
 
-from app import app, callers
+from app import app, bot, callers
 from config import VERIFY_TOKEN
 
 @app.route("/", methods=["GET", "POST"])
