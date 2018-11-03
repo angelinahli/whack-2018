@@ -8,6 +8,7 @@ Implementation Types:
     * Phone app - Angie
     * Web app - Hala
     * Text-based app - Hala
+    * Facebook based messenger app? - Angie
 
 Questions to answer:
 1) How would we implement a project like this?
