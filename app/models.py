@@ -1,0 +1,43 @@
+from datetime import datetime
+
+from app import db
+
+class User(db.Model):
+    __tablename__ = "user"
+    __table_args__ = {"mysql_engine": "InnoDB"}
+
+    user_id = db.Column(db.Integer, primary_key=True)
+    fb_id = db.Column(db.String(64), index=True, unique=True)
+    mid_conversation = db.Column(db.Boolean, index=True)
+    has_onboarded = db.Column(db.Boolean, index=True)
+    last_action = db.Column(db.String(64), index=True)
+    checkins = db.relationship("CheckIn", backref="user", lazy="dynamic")
+
+    def __repr__(self):
+        return "<User: {}>".format(self.user_id)
+
+class Intervention(db.Model):
+    __tablename__ = "intervention"
+    __table_args__ = {"mysql_engine": "InnoDB"}
+
+    intervention_id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(2048))
+    checkins = db.relationship("CheckIn", backref="intervention", 
+        lazy="dynamic")
+
+    def __repr__(self):
+        return "<Intervention: {}>".format(self.text)
+
+class CheckIn(db.Model):
+    __tablename__ = "checkin"
+    __table_args__ = {"mysql_engine": "InnoDB"}
+
+    checkin_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), 
+        onupdate="cascade")
+    datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    baseline = db.Column(db.Integer, index=True)
+    tried_intervention = db.Column(db.Boolean, index=True)
+    intervention_id = db.Column(db.Integer, 
+        db.ForeignKey("intervention.intervention_id"), onupdate="cascade")
+    impact = db.Column(db.Integer, index=True)
