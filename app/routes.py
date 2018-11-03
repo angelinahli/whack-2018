@@ -5,7 +5,7 @@ import random
 from flask import request, session
 
 from app import app, bot, db
-from app.models import User, Intervention, CheckIn
+from app.models import User, Intervention, CheckIn, Message
 from config import VERIFY_TOKEN
 
 ### Helper functions
@@ -32,6 +32,7 @@ def get_user(fb_id):
         db.session.commit()
     return user
 
+
 def handle_post_message(output):
     try:
         event = output["entry"][0]
@@ -44,6 +45,12 @@ def handle_post_message(output):
             txt = None
             if msg["message"].get("text"):
                 txt = msg["message"]["text"].strip().lower()
+                mess = Message(
+                    user_id = user.user_id,
+                    text = txt) 
+                print(txt)
+                db.session.add(mess)
+                db.session.commit()
             resp_text = "Test message"  # need to add response text here
             send_message(fb_id, resp_text)
     # this is fine, it's just easier to try except than use for loops 

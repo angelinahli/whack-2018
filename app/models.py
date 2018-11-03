@@ -12,9 +12,23 @@ class User(db.Model):
     has_onboarded = db.Column(db.Boolean, index=True)
     last_action = db.Column(db.String(64), index=True)
     checkins = db.relationship("CheckIn", backref="user", lazy="dynamic")
+    last_message = db.relationship("Message", backref="user", lazy="dynamic")
 
     def __repr__(self):
         return "<User: {}>".format(self.user_id)
+
+class Message(db.Model):
+    __tablename__ = "Message"
+    __table_args__ = {"mysql_engine": "InnoDB"}
+
+    message_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), onupdate="cascade")
+    #fb_id = db.Column(db.String(64), index=True, unique=True)
+    datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow) 
+    text = db.Column(db.String(64), index=True)
+
+    def __repr__(self):
+        return "<Message: {}>".format(self.text)
 
 class Intervention(db.Model):
     __tablename__ = "intervention"
