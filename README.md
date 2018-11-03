@@ -2,47 +2,26 @@
 
 ## To Do
 
-### Research different types of implementations
-Implementation Types:
-    * Chrome extension - Angie
-    * Phone app - Angie
-    * Web app - Hala
-    * Text-based app - Hala
-    * Facebook based messenger app? - Angie
+* Set up Twilio app: https://www.twilio.com/docs/studio/tutorials/how-to-build-a-chatbot
+* Come up with a list of interventions to try out; allow user to add their own interventions too
+* How can we figure out presentation? Can we find an optimal presentation too?
+    * Can we auto-generate cute graphics to send to the user?
 
-Questions to answer:
-1) How would we implement a project like this?
-2) Does this sound feasible given the time we have?
+### Done:
+* Research different types of implementations
 
 ## Idea
 
-Build a chrome extension / maybe attached to a website that helps users track which online behaviors are correlated with poor mental health, and suggests that they take a break / suggests some interventions when user seems to be having a bad day.
+Build a text-based chat-bot that prompts the user to track their mental health daily, and walks them through different prevention-based mental health interventions. Will check which interventions work best over time (HabitLab style).
+
+## Goals
+
+1. Give user data back to the user - wrap it up into something pretty
+2. Make it super easy and desirable to use and respond to
+3. Allow user flexibility to suggest their own interventions and monitor their own behavior
 
 ## Details / Notes
 
-* Behaviors we want to track:
-    * Time spent on different sites
-    * Ratio of times
-    * Time of day using
-
-* Interventions:
-    * Ask whether they are feeling okay?
-    * Help them wa
-
-* Woebot but an app!!!
-    * A preventative app that users can use
-    *
-
-* Try out a bunch of different behaviors and choose the best over time
-    * Multi armed bandit?
-
-* Tracks how theyre feeling, etc.
-* What sites are people visiting? How do we get that info?
-* Figuring out how to offer them recommendations
-
-* We dont need a fancy or correct algorithm yo
-    * we could just choose whichever has highest hit rate
-
-* Intervention ideas:
-
-^ let's see which of these is the most feasible.
+### Chatbox personality
+* Friendly but professional
+* 

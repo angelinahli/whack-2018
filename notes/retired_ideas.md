@@ -40,4 +40,28 @@
 
 * gamified exercise somehow
 
-* 
+* Behaviors we want to track:
+    * Time spent on different sites
+    * Ratio of times
+    * Time of day using
+
+* Interventions:
+    * Ask whether they are feeling okay?
+    * Help them wa
+
+* Woebot but an app!!!
+    * A preventative app that users can use
+
+* Try out a bunch of different behaviors and choose the best over time
+    * Multi armed bandit?
+
+* Tracks how theyre feeling, etc.
+* What sites are people visiting? How do we get that info?
+* Figuring out how to offer them recommendations
+
+* We dont need a fancy or correct algorithm yo
+    * we could just choose whichever has highest hit rate
+
+* Intervention ideas:
+
+^ let's see which of these is the most feasible.
