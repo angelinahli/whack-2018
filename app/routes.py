@@ -7,6 +7,7 @@ from flask import request, session
 from app import app, bot
 from config import VERIFY_TOKEN
 
+
 LAST_STATUS = None
 SECONDARY_STATUS = None
 
@@ -17,11 +18,13 @@ def receive_message():
         return verify_fb_token(token_sent)
     else:
         output = request.get_json()
+        print(output)
         for event in output["entry"]:
             messaging = event["messaging"]
             for message in messaging:
                 if message.get("message"):
                     recipient_id = message["sender"]["id"]
+                    user_id = recipient_id
                     text = message["message"].get("text").strip().lower()
                     if text:
                         response_sent_text = get_message(text)
@@ -37,6 +40,8 @@ def get_message(text):
     with open("conversation.json", "r") as fl:
         txt = fl.read()
     conv = json.loads(txt)
+    LAST_STATUS = None
+    SECONDARY_STATUS = None
 
     if not LAST_STATUS or \
         (LAST_STATUS == "ONBOARDING" and SECONDARY_STATUS == "REFUSE"):
