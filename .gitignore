@@ -3,4 +3,3 @@ venv/
 config.py
 .DS_Store/
 *.py~
-migrations/
