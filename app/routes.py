@@ -22,7 +22,6 @@ def send_message(recipient_id, response):
 def add_user(fb_id):
     user = User(
         fb_id=fb_id, 
-        mid_conversation=True, 
         has_onboarded=False,
         last_action="NONE"
     )
@@ -142,7 +141,7 @@ def get_score_resp(txt, default_msg):
         return "You go Glen Coco!!! Power to you 👏👏"
 
 def get_interv_prompt(user):
-    intervs = UserIntervention.query.filter_by(user_id=user.user_id)
+    intervs = list(UserIntervention.query.filter_by(user_id=user.user_id))
     interv = random.choice(intervs)
     txt = Intervention.query.get(interv.intervention_id).text
     return txt + " (Let me know when you're done!)"
@@ -171,18 +170,25 @@ def handle_post_message(output):
             user = get_user(fb_id)
             txt = msg["message"]["text"].strip().lower()
 
+            prev_key = user.last_action
+
             # process what the user sent us
             error_resp = handle_prev_resp(user, txt)
 
-            add a message
+            #add a message
             mess = Message(
                 user_id = user.user_id,
                 text = txt) 
             db.session.add(mess)
             db.session.commit()
 
+            if prev_key == "JOURNAL_PROMPT" and txt != "stop":
+                with open("journal.txt", "a") as journal:
+                    journal.write(txt+"\n")
+                return
+
             # figure out what to do next
-            prev_key = user.last_action
+            
             with open("conversation.json", "r") as fl:
                 conv_text = fl.read()
             convos = json.loads(conv_text)
