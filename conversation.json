@@ -125,8 +125,8 @@
     },
     "JOURNAL_PROMPT": {
         "messages": [
-            "Tell me anything you would like! I've been told I'm an excellent listener...",
-            "My ears are all open! What's been on your mind recently?"
+            "Tell me anything you would like! I've been told I'm an excellent listener... When you're done journaling, just type 'stop'!",
+            "My ears are all open! What's been on your mind recently? When you're done journaling, just type 'stop'!"
         ],
         "user_response": 1
     },
