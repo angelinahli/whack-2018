@@ -1,5 +1,9 @@
 # WHACK 2018
 
+[Watch it here!](https://www.youtube.com/watch?v=aXqVAB5Coo0)
+
+![demo_image](whack_demo.png)
+
 ## Idea
 
 Build a text-based chat-bot that prompts the user to track their mental health daily, and walks them through different prevention-based mental health interventions. Will check which interventions work best over time (HabitLab style).
