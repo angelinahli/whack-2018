@@ -75,6 +75,17 @@ def get_next_msg_key(user, txt):
     if len(split_key) == 2 and split_key[1] == "START":
         return split_key[0] + "_NO" if "no" in txt else split_key[0] + "_YES"
         
+    #elif prev_key == "JOURNAL_PROMPT":
+        #entry = ''
+        #messages = Message.query.filter_by(user=user).first()
+        print(messages)
+        #while user.messages is not "end journal":
+            #receive_message()
+         #   print(user.messages)
+            #handle_post_message(output)
+        #return "JOURNAL_END"
+
+
 def get_checkin_resp(txt):
     error_req = "Please enter a number between 1 & 5 :)"
     val = None
