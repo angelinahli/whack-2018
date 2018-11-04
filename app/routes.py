@@ -38,31 +38,63 @@ def get_user(fb_id):
         user = User.query.filter_by(fb_id=fb_id).first()
     return user
 
+def valid_score(txt):
+    return txt.isdigit() and 1 <= int(txt) <= 5
+
+def valid_yes_no(txt):
+    return txt in ["yes", "yup", "no", "nah", "nope", "yah"]
+
+def handle_prev_resp(user, txt):
+    # before we move on, we have to handle the info the user sent us
+    # handle cases that require additional processing
+    key = user.last_action
+    is_error = False
+
+    # validate responses
+    if key in ["CHECKIN_START", "INTERV_START", "JOURNAL_START", 
+            "INTERV_KEEP"] and not valid_yes_no(txt):
+        is_error = True
+    if key in ["CHECKIN_BASELINE", "INTERV_FEEDBACK"] and not valid_score(txt):
+        is_error = True
+
+    if key == "ONBOARDING_FINISH":
+        user.has_onboarded = True
+        db.session.commit()
+        db.session.close()
+
+    # make changes
+    if key == "CHECKIN_BASELINE":
+        pass
+    if key == "INTERV_FEEDBACK":
+        pass
+    if key == "INTERV_KEEP":
+        pass
+
+    return is_error
+
 def get_next_msg_key(user, txt):
     prev_key = user.last_action
     key_dict = {
-        "NONE":"INTRODUCTION",
-        "WRAPUP":"INTRODUCTION",
-        "ONBOARDING_START":"ONBOARDING_ASK",
-        "ONBOARDING_ASK":"ONBOARDING_FINISH",
-        "ONBOARDING_FINISH":"CHECKIN_START",
-        "CHECKIN_NO":"JOURNAL_START",
-        "CHECKIN_YES":"CHECKIN_BASELINE",
-        "CHECKIN_BASELINE":"CHECKIN_RESP",
-        "CHECKIN_RESP":"INTERV_START",
-        "INTERV_START":"INTERV_YES",
-        "INTERV_YES":"INTERV_TYPE",
-        "INTERV_TYPE":"INTERV_LENGTH",
-        "INTERV_LENGTH":"INTERV_PROMPT",
-        "INTERV_PROMPT":"INTERV_FEEDBACK",
-        "INTERV_FEEDBACK":"INTERV_KEEP",
-        "INTERV_KEEP":"INTERV_END",
-        "INTERV_END":"JOURNAL_START",
-        "INTERV_NO":"JOURNAL_START",
-        "JOURNAL_YES":"JOURNAL_PROMPT",
-        "JOURNAL_NO":"WRAPUP",
-        "JOURNAL_PROMPT":"JOURNAL_END",
-        "JOURNAL_END":"WRAPUP"
+        "NONE": "INTRODUCTION",
+        "WRAPUP": "INTRODUCTION",
+        "ONBOARDING_START": "ONBOARDING_ASK",
+        "ONBOARDING_ASK": "ONBOARDING_FINISH",
+        "ONBOARDING_FINISH": "CHECKIN_START",
+        "CHECKIN_NO": "JOURNAL_START",
+        "CHECKIN_YES": "CHECKIN_BASELINE",
+        "CHECKIN_BASELINE": "CHECKIN_RESP",
+        "CHECKIN_RESP": "INTERV_START",
+        "INTERV_START": "INTERV_YES",
+        "INTERV_YES": "INTERV_PROMPT",
+        "INTERV_PROMPT": "INTERV_FEEDBACK",
+        "INTERV_FEEDBACK": "INTERV_KEEP",
+        "INTERV_KEEP": "INTERV_END",
+        "INTERV_END": "JOURNAL_START",
+        "INTERV_NO": "JOURNAL_START",
+        "JOURNAL_YES": "JOURNAL_PROMPT",
+        "JOURNAL_NO": "WRAPUP",
+        "JOURNAL_PROMPT": "JOURNAL_END",
+        "JOURNAL_END": "WRAPUP"
     }
     
     if prev_key in key_dict:
@@ -74,50 +106,42 @@ def get_next_msg_key(user, txt):
     split_key = prev_key.split("_")
     if len(split_key) == 2 and split_key[1] == "START":
         return split_key[0] + "_NO" if "no" in txt else split_key[0] + "_YES"
-        
-def get_checkin_resp(txt):
-    error_req = "Please enter a number between 1 & 5 :)"
-    val = None
-    try:
-        val = int(txt)
-    except ValueError:
-        return "Sorry, I didn't understand that! " + error_req
-    if val < 1 or val > 5:
-        return "Sorry, I didn't catch that! " + error_req
+
+def get_yes_no_resp(txt, default_msg):
+    if not valid_yes_no(txt):
+        return "Sorry, I didn't understand that! Try entering 'yes' or 'no' :)"
+    return default_msg
+
+def get_score_resp(txt, default_msg):
+    if not valid_score(txt):
+        return "Sorry, I didn't understand that! Please enter a whole number "
+                + "between 1 & 5 :)"
+    if default_msg:
+        return default_msg
+
+    val = int(txt)
     if val in [1, 2]:
-        return "I'm sorry to hear that you're having a rough day :( " \
-               + "I hope I can be helpful!"
+        return "I'm sorry to hear that you're having a rough day :( I hope " \
+                + "I can be helpful!"
     elif val in [3, 4]:
-        return "That's great! :) Let's see if we can make your day rock " \
-               + "even more!"
+        return "That's great! :) Let's see if we can make your day rock even more!"
     elif val == 5:
         return "You go Glen Coco!!! Power to you 👏👏"
-    return "Sorry, something went wrong :/ That's my bad! Will you tell me " \
-           + "again? " + error_req
 
 def get_interv_prompt(user, txt):
     return "interv_prompt_text"
-
-def handle_prev_resp(user, txt):
-    # before we move on, we have to handle the info the user sent us
-    # handle cases that require additional processing
-    pass
        
-def get_next_resp_text(user, txt, msg_key):
-    with open("conversation.json", "r") as fl:
-        conv_text = fl.read()
-    convos = json.loads(conv_text)
-    
-    # grab response text
-    resp_txt = None
-    if msg_key in convos:
-        return random.choice(convos.get(msg_key))
-    
+def handle_resp_text(user, txt, prev_key, msg_key, convos):
+    msg = random.choice(convos.get(msg_key, dict()).get("messages", [None]))
     # there are some things we need to personalize
-    elif msg_key == "CHECKIN_RESP":
-        return get_checkin_resp(txt)
+    if msg_key == "CHECKIN_RESP" or "INTERV_KEEP":
+        return get_score_resp(txt, default_msg=msg)
+    elif prev_key in ["CHECKIN_START", "INTERV_START", "JOURNAL_START", 
+                      "INTERV_KEEP"]:
+        return get_yes_no_resp(txt, default_msg=msg)
     elif msg_key == "INTERV_PROMPT":
         return get_interv_prompt(user, txt)
+    return msg
 
 def handle_post_message(output):
     try:
@@ -126,35 +150,43 @@ def handle_post_message(output):
         msg = messaging[0]
 
         # otherwise we don't want to do anything
-        if msg.get("message"):
+        if msg.get("message") and msg["message"].get("text"):
             fb_id = msg["sender"]["id"]
             user = get_user(fb_id)
+            txt = msg["message"]["text"].strip().lower()
 
-            # save the user message
-            txt = None
-            if msg["message"].get("text"):
-                txt = msg["message"]["text"].strip().lower()
+            # process what the user sent us
+            error_resp = handle_prev_resp(user, txt)
 
-                # process what the user sent us
-                handle_prev_resp(user, txt)
-
-                mess = Message(
-                    user_id = user.user_id,
-                    text = txt) 
-                db.session.add(mess)
-                db.session.commit()
+            # add a message
+            mess = Message(
+                user_id = user.user_id,
+                text = txt) 
+            db.session.add(mess)
+            db.session.commit()
 
             # figure out what to do next
-            next_msg_key = get_next_msg_key(user, txt)
-            print("\n\n\nTESTING")
-            print(user.last_action, next_msg_key)
-            print("\n\n\n")
-            resp_text = get_next_resp_text(user, txt, next_msg_key)
-            send_message(fb_id, resp_text)
-            
-            user.last_action = next_msg_key
-            db.session.commit()
-            db.session.close()
+            with open("conversation.json", "r") as fl:
+                conv_text = fl.read()
+            convos = json.loads(conv_text)
+
+            prev_key = user.last_action
+            while True:
+                next_msg_key = get_next_msg_key(user, txt)
+                resp_text = get_next_resp_text(
+                    user, txt, prev_key, next_msg_key, convos)
+                send_message(fb_id, resp_text)
+
+                # if we got a valid input / can move on
+                if not error_resp:
+                    user.last_action = next_msg_key 
+                    db.session.commit()
+                    db.session.close()
+
+                # if we're now waiting for the user to respond
+                if convos.get(prev_key).get("user_response") == 1:
+                    break
+                prev_key = user.last_action
 
     # this is fine, it's just easier to try except than use for loops 
     except IndexError: 
