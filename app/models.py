@@ -12,7 +12,7 @@ class User(db.Model):
     has_onboarded = db.Column(db.Boolean, index=True)
     last_action = db.Column(db.String(64), index=True)
     checkins = db.relationship("CheckIn", backref="user", lazy="dynamic")
-    last_message = db.relationship("Message", backref="user", lazy="dynamic")
+    messages = db.relationship("Message", backref="user", lazy="dynamic")
 
     def __repr__(self):
         return "<User: {}>".format(self.user_id)
@@ -22,8 +22,8 @@ class Message(db.Model):
     __table_args__ = {"mysql_engine": "InnoDB"}
 
     message_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), onupdate="cascade")
-    #fb_id = db.Column(db.String(64), index=True, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), 
+        onupdate="cascade")
     datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow) 
     text = db.Column(db.String(64), index=True)
 
@@ -42,8 +42,23 @@ class Intervention(db.Model):
     def __repr__(self):
         return "<Intervention: {}>".format(self.text)
 
+class UserIntervention(db.Model):
+    __tablename__ = "user_intervention"
+    __table_args__ = {"mysql_engine": "InnoDB"}
+
+    uid = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"),
+        onupdate="cascade")
+    intervention_id = db.Column(db.Integer, 
+        db.ForeignKey("intervention.intervention_id"), onupdate="cascade")
+
+    def __repr__(self):
+        return "<User: {}; Intervention: {}>".format(
+            self.user_id,
+            self.intervention_id)
+
 class CheckIn(db.Model):
-    __tablename__ = "checkin"
+    __tablename__ = "check_in"
     __table_args__ = {"mysql_engine": "InnoDB"}
 
     checkin_id = db.Column(db.Integer, primary_key=True)
@@ -55,3 +70,6 @@ class CheckIn(db.Model):
     intervention_id = db.Column(db.Integer, 
         db.ForeignKey("intervention.intervention_id"), onupdate="cascade")
     impact = db.Column(db.Integer, index=True)
+
+    def __repr__(self):
+        return "<Check in: {}>".format(self.checkin_id)
