@@ -5,7 +5,7 @@ import random
 from flask import request, session
 
 from app import app, bot, db
-from app.models import User, Intervention, CheckIn, Message
+from app.models import User, Intervention, UserIntervention, CheckIn, Message
 from config import VERIFY_TOKEN
 
 ### Helper functions
@@ -27,8 +27,15 @@ def add_user(fb_id):
         last_action="NONE"
     )
     db.session.add(user)
+
+    interventions = Intervention.query.all()
+    for interv in interventions:
+        ui = UserIntervention(
+            user_id=user.user_id, 
+            intervention_id=interv.intervention_id)
+        db.session.add(ui)
+
     db.session.commit()
-    return user
 
 def get_user(fb_id):
     user = User.query.filter_by(fb_id=fb_id).first()
@@ -67,7 +74,13 @@ def handle_prev_resp(user, txt):
     if key == "INTERV_FEEDBACK":
         pass
     if key == "INTERV_KEEP":
-        pass
+        new_interv = Intervention(text=txt)
+        db.session.add(new_interv)
+        ui = UserIntervention(
+            user_id=user.user_id, 
+            intervention_id=new_interv.intervention_id)
+        db.session.add(ui)
+        db.session.commit()
 
     return is_error
 
@@ -83,13 +96,12 @@ def get_next_msg_key(user, txt):
         "CHECKIN_YES": "CHECKIN_BASELINE",
         "CHECKIN_BASELINE": "CHECKIN_RESP",
         "CHECKIN_RESP": "INTERV_START",
-        "INTERV_START": "INTERV_YES",
         "INTERV_YES": "INTERV_PROMPT",
+        "INTERV_NO": "JOURNAL_START",
         "INTERV_PROMPT": "INTERV_FEEDBACK",
         "INTERV_FEEDBACK": "INTERV_KEEP",
         "INTERV_KEEP": "INTERV_END",
         "INTERV_END": "JOURNAL_START",
-        "INTERV_NO": "JOURNAL_START",
         "JOURNAL_YES": "JOURNAL_PROMPT",
         "JOURNAL_NO": "WRAPUP",
         "JOURNAL_PROMPT": "JOURNAL_END",
@@ -106,16 +118,6 @@ def get_next_msg_key(user, txt):
     if len(split_key) == 2 and split_key[1] == "START":
         return split_key[0] + "_NO" if txt in ["no", "nah", "nope"] else \
                split_key[0] + "_YES"
-
-    #elif prev_key == "JOURNAL_PROMPT":
-        #entry = ''
-        #messages = Message.query.filter_by(user=user).first()
-        print(messages)
-        #while user.messages is not "end journal":
-            #receive_message()
-         #   print(user.messages)
-            #handle_post_message(output)
-        #return "JOURNAL_END"
 
 def get_yes_no_resp(txt, default_msg):
     if not valid_yes_no(txt):
@@ -138,8 +140,11 @@ def get_score_resp(txt, default_msg):
     elif val == 5:
         return "You go Glen Coco!!! Power to you 👏👏"
 
-def get_interv_prompt(user, txt):
-    return "interv_prompt_text"
+def get_interv_prompt(user):
+    intervs = UserIntervention.query.filter_by(user_id=user.user_id)
+    interv = random.choice(intervs)
+    txt = Intervention.query.get(interv.intervention_id).text
+    return txt + " (Let me know when you're done!)"
        
 def get_next_resp_text(user, txt, prev_key, msg_key, convos):
     msg = random.choice(convos.get(msg_key, dict()).get("messages", [None]))
@@ -150,7 +155,7 @@ def get_next_resp_text(user, txt, prev_key, msg_key, convos):
                       "INTERV_KEEP"]:
         return get_yes_no_resp(txt, default_msg=msg)
     elif msg_key == "INTERV_PROMPT":
-        return get_interv_prompt(user, txt)
+        return get_interv_prompt(user)
     return msg
 
 def handle_post_message(output):
