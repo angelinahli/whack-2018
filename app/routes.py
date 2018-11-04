@@ -165,18 +165,26 @@ def handle_post_message(output):
             user = get_user(fb_id)
             txt = msg["message"]["text"].strip().lower()
 
+            prev_key = user.last_action
+
             # process what the user sent us
             error_resp = handle_prev_resp(user, txt)
 
-            # add a message
-            # mess = Message(
-            #     user_id = user.user_id,
-            #     text = txt) 
-            # db.session.add(mess)
-            # db.session.commit()
+            #add a message
+            mess = Message(
+                user_id = user.user_id,
+                text = txt) 
+            db.session.add(mess)
+            db.session.commit()
+
+            if prev_key == "JOURNAL_PROMPT" and txt != "stop":
+                with open("journal.txt", "a") as journal:
+                    journal.write(txt+"\n")
+                return
+                    
 
             # figure out what to do next
-            prev_key = user.last_action
+            
             with open("conversation.json", "r") as fl:
                 conv_text = fl.read()
             convos = json.loads(conv_text)
