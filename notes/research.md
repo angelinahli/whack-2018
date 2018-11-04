@@ -25,3 +25,34 @@ Here are some ideas for grounding activities:
 -Take a mindful walk, either inside or outside. Pay close attention to your body and your surroundings.
 -Squiggle. Wiggle around. Dance. Stretch. Be silly and active for a few minutes.
 -Any other favorite grounding technique you've heard of or can think of. There's nothing wrong with experimenting!
+
+
+
+## To Do
+
+* GOAL: Create a conversation flow between user and server to track mood daily.
+    * How to send messages at a specific time per day?
+    * How to create a flowchart that remembers what user said and asks them how they are doing now?
+    * Write the flowchart of actions responding to the user.
+    * Figure out how to store the users info somewhere.
+
+* User prompted daily intervention:
+    * User says "Hi" to start the conversation
+    * INTRODUCTION: "Hi!" / something
+    * ONBOARDING: IF this is the first time the user has contacted us, onboard them by giving them a short pitch about who we are and what we do.
+        * Maybe have a flow dedicated to this.
+    * CHECKIN: Ask the user how they are feeling today from a scale of 1-5.
+    * RESPONSE: Respond appropriately to the user based on the scale.
+    * ASKINTERVENTION: Ask the user whether they would like to try out an intervention now.
+        * User can respond either "yes" or "no"
+    * CHOOSEINTERVENTION: Select which intervention to introduce to the user, ask them to do something.
+    * EVALUATION: Ask the user how they are feeling now and store the information.
+    * WRAPUP: Say goodbye.
+
+* Come up with a list of interventions to try out; allow user to add their own interventions too
+* How can we figure out presentation? Can we find an optimal presentation too?
+    * Can we auto-generate cute graphics to send to the user?
+
+### Done:
+* Research different types of implementations
+* Set up Twilio app: https://www.twilio.com/docs/studio/tutorials/how-to-build-a-chatbot

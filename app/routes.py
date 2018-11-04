@@ -69,6 +69,7 @@ def handle_prev_resp(user, txt):
         db.session.commit()
 
     # make changes
+    # TODO: do this
     if key == "CHECKIN_BASELINE":
         pass
     if key == "INTERV_FEEDBACK":
@@ -173,12 +174,12 @@ def handle_post_message(output):
             # process what the user sent us
             error_resp = handle_prev_resp(user, txt)
 
-            # add a message
-            # mess = Message(
-            #     user_id = user.user_id,
-            #     text = txt) 
-            # db.session.add(mess)
-            # db.session.commit()
+            add a message
+            mess = Message(
+                user_id = user.user_id,
+                text = txt) 
+            db.session.add(mess)
+            db.session.commit()
 
             # figure out what to do next
             prev_key = user.last_action
@@ -199,10 +200,6 @@ def handle_post_message(output):
 
             prev_key = user.last_action
             while True:
-                print("\n\n\nTESTING CODE")
-                print(prev_key)
-                print("\n\n\n")
-
                 # if we're now waiting for the user to respond
                 if prev_key != "NONE" and (
                         convos.get(prev_key).get("user_response") == 1 or error_resp):
