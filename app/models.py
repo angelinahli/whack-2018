@@ -8,7 +8,6 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key=True)
     fb_id = db.Column(db.String(64), index=True, unique=True)
-    mid_conversation = db.Column(db.Boolean, index=True)
     has_onboarded = db.Column(db.Boolean, index=True)
     last_action = db.Column(db.String(64), index=True)
     checkins = db.relationship("CheckIn", backref="user", lazy="dynamic")
@@ -64,6 +63,7 @@ class CheckIn(db.Model):
     checkin_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), 
         onupdate="cascade")
+    mid_checkin = db.Column(db.Boolean, index=True)
     datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     baseline = db.Column(db.Integer, index=True)
     tried_intervention = db.Column(db.Boolean, index=True)
