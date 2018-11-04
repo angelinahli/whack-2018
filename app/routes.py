@@ -38,51 +38,41 @@ def get_user(fb_id):
         user = User.query.filter_by(fb_id=fb_id).first()
     return user
 
-
-def get_next_msg_key(txt, user):
+def get_next_msg_key(user, txt):
     prev_key = user.last_action
     key_dict = {
-            "NONE":"INTRODUCTION",
-            "WRAPUP":"INTRODUCTION",
-            "ONBOARDING_START":"ONBOARDING_ASK",
-            "ONBOARDING_ASK":"ONBOARDING_FINISH",
-            "ONBOARDING_FINISH":"CHECKIN_START",
-            "CHECKIN_NO":"JOURNAL_START",
-            "CHECKIN_YES":"CHECKIN_BASELINE",
-            "CHECKIN_BASELINE":"CHECKIN_RESP",
-            "CHECKIN_RESP":"INTERV_START",
-            "INTERV_START":"INVERV_YES",
-            "INTERV_YES":"INTERV_TYPE",
-            "INTERV_TYPE":"INTERV_LENGTH",
-            "INTERV_LENGTH":"INTERV_PROMPT",
-            "INTERV_PROMPT":"INTERV_FEEDBACK",
-            "INTERV_FEEDBACK":"INTERV_KEEP",
-            "INTERV_KEEP":"INTERV_END",
-            "INTERV_END":"JOURNAL_START",
-            "INTERV_NO":"JOURNAL_START",
-            "JOURNAL_YES":"JOURNAL_PROMPT",
-            "JOURNAL_PROMPT":"JOURNAL_END",
-            "JOURNAL_END":"WRAPUP"}
+        "NONE":"INTRODUCTION",
+        "WRAPUP":"INTRODUCTION",
+        "ONBOARDING_START":"ONBOARDING_ASK",
+        "ONBOARDING_ASK":"ONBOARDING_FINISH",
+        "ONBOARDING_FINISH":"CHECKIN_START",
+        "CHECKIN_NO":"JOURNAL_START",
+        "CHECKIN_YES":"CHECKIN_BASELINE",
+        "CHECKIN_BASELINE":"CHECKIN_RESP",
+        "CHECKIN_RESP":"INTERV_START",
+        "INTERV_START":"INVERV_YES",
+        "INTERV_YES":"INTERV_TYPE",
+        "INTERV_TYPE":"INTERV_LENGTH",
+        "INTERV_LENGTH":"INTERV_PROMPT",
+        "INTERV_PROMPT":"INTERV_FEEDBACK",
+        "INTERV_FEEDBACK":"INTERV_KEEP",
+        "INTERV_KEEP":"INTERV_END",
+        "INTERV_END":"JOURNAL_START",
+        "INTERV_NO":"JOURNAL_START",
+        "JOURNAL_YES":"JOURNAL_PROMPT",
+        "JOURNAL_PROMPT":"JOURNAL_END",
+        "JOURNAL_END":"WRAPUP"
+    }
     
     if prev_key in key_dict:
         return key_dict[prev_key]
     
-    p_head = prev_key.split("_")[0]
-    p_fork = prev_key.split("_")[1]
+    p_head, p_fork = prev_key.split("_")
     if p_fork == "INTRODUCTION":
-        if user.has_onboarded == False:
-            next_key = "ONBOARDING_START"
-        else:
-            next_key = "CHECKIN_START"
-
+        return "ONBOARDING_START" if not user.has_onboarded else "CHECKIN_START"
+    
     elif p_fork == "START":
-        if "no" in txt:
-            next_key = p_head + "_NO"
-        else:
-            next_key = p_head = "_YES"
-                
-    return next_key
-
+        return p_head + "_NO" if no in txt else p_head + "_YES"
         
 def get_checkin_resp(txt):
     error_req = "Please enter a number between 1 & 5 :)"
@@ -103,7 +93,7 @@ def get_checkin_resp(txt):
            + "again? " + error_req
 
 def get_interv_prompt(user, txt):
-    pass
+    return "interv_prompt_text"
 
 def handle_prev_resp(user, txt):
     # before we move on, we have to handle the info the user sent us
@@ -124,14 +114,13 @@ def get_next_resp_text(user, txt):
     # grab response text
     resp_txt = None
     if msg_key in convos:
-        resp_txt = random.choice(convos.get(msg_key))
+        return random.choice(convos.get(msg_key))
     
     # there are some things we need to personalize
     elif msg_key == "CHECKIN_RESP":
-        resp_txt = get_checkin_resp(user, txt)
+        return get_checkin_resp(user, txt)
     elif msg_key == "INTERV_PROMP"
-        resp_txt = get_interv_prompt(user, txt)
-    return resp_txt
+        return get_interv_prompt(user, txt)
 
 def handle_post_message(output):
     try:
